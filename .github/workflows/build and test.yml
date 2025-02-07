@@ -40,7 +40,7 @@ jobs:
       - name: Deploy BackEnd  
         uses: JorgeLNJunior/render-deploy@v1.4.4  
         with:  
-          service_id: ${{ secrets.hook-be }}  
+          service_id: ${{ secrets.HOOK_BE }}  
           api_key: ${{ secrets.APP_KYE }}  # Проверете името на секрет, за да е коректно  
           wait_deploy: true  
 
@@ -53,6 +53,6 @@ jobs:
       - name: Deploy FrontEnd  
         uses: JorgeLNJunior/render-deploy@v1.4.4  
         with:  
-          service_id: ${{ secrets.my_hook-fe }}  
+          service_id: ${{ secrets.MY_HOOK_FE }}  
           api_key: ${{ secrets.APP_KYE }}  # Проверете името на секрет, за да е коректно  
           wait_deploy: true

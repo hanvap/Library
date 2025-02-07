@@ -26,5 +26,6 @@ jobs:
       run: npm run start_fe &
     - name: build becken end
       run: npm run start_be &
+    - run: npx playwright install
     - name: run test
       run: npm test

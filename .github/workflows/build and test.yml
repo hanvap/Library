@@ -23,8 +23,8 @@ jobs:
     - name: install
       run: npm install
     - name: build frond end
-      run: npm run start_fn
+      run: npm run start_fe
     - name: build becken end
-      run: npm run start_bn
+      run: npm run start_be
     - name: run test
       run: npm test

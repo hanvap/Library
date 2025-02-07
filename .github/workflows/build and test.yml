@@ -1,31 +1,56 @@
 
 
-name: Build and Test
+name: Build and Test  
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on:  
+  push:  
+    branches: [ "main" ]  
+  pull_request:  
+    branches: [ "main" ]  
 
-jobs:
-  build:
+jobs:  
+  build:  
+    runs-on: ubuntu-latest  
 
-    runs-on: ubuntu-latest
+    steps:  
+    - uses: actions/checkout@v4  
+    - name: Use Node 20  
+      uses: actions/setup-node@v4  
+      with:  
+        node-version: 20  
+        cache: 'npm'  
+    - name: Install dependencies  
+      run: npm install  
+    - name: Build frontend  
+      run: npm run start_fe &  
+    - name: Build backend  
+      run: npm run start_be &  
+    - run: npx playwright install  
+    - name: Run tests  
+      run: npm test  
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Use Node 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    - name: install
-      run: npm install
-    - name: build frond end 
-      run: npm run start_fe &
-    - name: build becken end
-      run: npm run start_be &
-    - run: npx playwright install
-    - name: run test
-      run: npm test
+  deploy-be:  
+    needs: build  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout the repository  
+        uses: actions/checkout@v3  
+      - name: Deploy BackEnd  
+        uses: JorgeLNJunior/render-deploy@v1.4.4  
+        with:  
+          service_id: ${{ secrets.hook-be }}  
+          api_key: ${{ secrets.APP_KYE }}  # Проверете името на секрет, за да е коректно  
+          wait_deploy: true  
+
+  deploy-fe:  
+    needs: build  # Поправете 'build_test' на 'build'  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout the repository  
+        uses: actions/checkout@v3  
+      - name: Deploy FrontEnd  
+        uses: JorgeLNJunior/render-deploy@v1.4.4  
+        with:  
+          service_id: ${{ secrets.my_hook-fe }}  
+          api_key: ${{ secrets.APP_KYE }}  # Проверете името на секрет, за да е коректно  
+          wait_deploy: true

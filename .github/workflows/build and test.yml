@@ -1,0 +1,30 @@
+
+
+name: Build and Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+    - name: install
+      run: npm install
+    - name: build frond end
+      run: npm run start_fn
+    - name: build becken end
+      run: npm run start_bn
+    - name: run test
+      run: npm test
